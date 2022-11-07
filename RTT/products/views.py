@@ -43,12 +43,12 @@ class ProductCreateAPIView(CreateAPIView):
     serializer_class = InputProductSerializer
     def post(self, request, *args, **kwargs):
         # print (request.user.id)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(user=request.user)
+        serializer = self.get_serializer(data = request.data)
+        serializer.is_valid(raise_exception = True)
+        serializer.save(creator = request.user)
         #If you want send email must Feth CRITICAL_DATA in setting or comment tow line blow 
-        superuser_emails = User.objects.filter(is_superuser=True).values_list('email', flat=True)
-        celery_send_email_task(superuser_emails, serializer.data, request.user)
+        #superuser_emails = User.objects.filter(is_superuser=True).values_list('email', flat=True)
+        #celery_send_email_task(superuser_emails, serializer.data, request.user)
 
         return Response(data =serializer.data, status=status.HTTP_200_OK) 
 
